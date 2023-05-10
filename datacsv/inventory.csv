@@ -1,0 +1,15 @@
+product_id,product_name,category,quantity,wholesale,retail,modify_date,total_cost
+15,Fogg Red,Perfume,3,199,199,Fri Feb 03 2023,597
+17,Fogg Master,Perfume,5,199,199,Sat Feb 04 2023,995
+18,Fogg Black2,Perfume,5,199,199,Sat Feb 04 2023,995
+19,Cute Glycerine,3,10,30,50,Sat Feb 04 2023,300
+20,cute pomade,2,7,25,50,Sat Feb 04 2023,175
+21,Vaseline mini,2,10,5,15,Sun Feb 05 2023,50
+22,data cable,1,10,50,120,Thu Feb 16 2023,500
+23,headphone 450,1,15,258,540,Thu Feb 16 2023,3870
+24,headphone 360,1,20,250,550,Thu Feb 16 2023,5000
+25,type c cable,2,10,120,150,Thu Feb 16 2023,1200
+26,keyboard imice,1,12,550,700,Thu Feb 16 2023,6600
+27,mouse imice,1,12,150,250,Thu Feb 16 2023,1800
+28,mobile stand,1,5,50,100,Tue Feb 28 2023,250
+29,mobile stand,1,5,50,100,Tue Feb 28 2023,250
