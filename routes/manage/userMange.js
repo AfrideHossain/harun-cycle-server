@@ -4,7 +4,7 @@ const router = express.Router();
 // knex db file
 const knex = require("../../dbcon");
 
-// update customer bill
+// get customer info
 router.get("/client/:id", fetchValidUser, (req, res) => {
   let idParam = req.params;
   try {

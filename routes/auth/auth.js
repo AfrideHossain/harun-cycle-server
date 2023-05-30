@@ -2,12 +2,13 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const md5 = require("md5");
+const fetchValidUser = require("../middleware/fetchvaliduser");
 // import dotenv pack
 require("dotenv").config();
 const jwt_string = process.env.JWT_SECRET;
 const knex = require("../../dbcon");
 
-//ROUTE 2: Log in using POST (/auth/login).
+//ROUTE 1: Log in using POST (/auth/login).
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   let success = true;
@@ -41,6 +42,40 @@ router.post("/login", async (req, res) => {
       });
   } catch (error) {
     res.status(500).send("Internal server error");
+  }
+});
+//ROUTE 2: Log in using POST (/auth/userDecp).
+router.post("/userDecp", async (req, res) => {
+  const { token } = req.body;
+  // let success = true;
+  if (!token) {
+    res.status(401).send({ error: "Invalid credentials" });
+    return;
+  }
+  try {
+    const data = jwt.verify(token, jwt_string);
+    // req.user = data.user;
+    // console.log(data);
+    res.send(data.user);
+  } catch (error) {
+    res.status(401).send({ error: "Invalid credentials" });
+  }
+});
+//ROUTE 2: Log in using POST (/auth/userDecp).
+router.post("/updatepass", fetchValidUser, async (req, res) => {
+  const { username, password } = req.body;
+  // let success = true;
+  console.log({ username, password });
+  try {
+    const passUpdate = knex("admin")
+      .where("username", username)
+      .update({ password: md5(password) }, ["uid"]);
+    passUpdate.then((data) => {
+      res.json({ success: true, msg: "Password updated", data });
+    });
+    // res.send(data.user);
+  } catch (error) {
+    res.status(401).send({ success: false, error: "Invalid credentials" });
   }
 });
 
