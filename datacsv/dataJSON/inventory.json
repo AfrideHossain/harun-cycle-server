@@ -1,0 +1,222 @@
+[
+    {
+        "brand": "Perfume",
+        "id": 15,
+        "modify_date": "Fri Feb 03 2023",
+        "name": "Fogg Red",
+        "quantity": 7,
+        "retail": 199,
+        "total_cost": 597,
+        "warranty": "3 years",
+        "wholesale": 199
+    },
+    {
+        "brand": "Perfume",
+        "id": 17,
+        "modify_date": "Sat Feb 04 2023",
+        "name": "Fogg Master",
+        "quantity": 5,
+        "retail": 199,
+        "total_cost": 995,
+        "warranty": "1 years",
+        "wholesale": 199
+    },
+    {
+        "brand": "Perfume",
+        "id": 18,
+        "modify_date": "Sat Feb 04 2023",
+        "name": "Fogg Black2",
+        "quantity": 5,
+        "retail": 199,
+        "total_cost": 995,
+        "warranty": "2 years",
+        "wholesale": 199
+    },
+    {
+        "brand": "3",
+        "id": 19,
+        "modify_date": "Sat Feb 04 2023",
+        "name": "Cute Glycerine",
+        "quantity": 10,
+        "retail": 50,
+        "total_cost": 300,
+        "warranty": "3 years",
+        "wholesale": 30
+    },
+    {
+        "brand": "2",
+        "id": 20,
+        "modify_date": "Sat Feb 04 2023",
+        "name": "cute pomade",
+        "quantity": 7,
+        "retail": 50,
+        "total_cost": 175,
+        "warranty": "4 years",
+        "wholesale": 25
+    },
+    {
+        "brand": "2",
+        "id": 21,
+        "modify_date": "Sun Feb 05 2023",
+        "name": "Vaseline mini",
+        "quantity": 10,
+        "retail": 15,
+        "total_cost": 50,
+        "warranty": "1 years",
+        "wholesale": 5
+    },
+    {
+        "brand": "1",
+        "id": 22,
+        "modify_date": "Thu Feb 16 2023",
+        "name": "data cable",
+        "quantity": 10,
+        "retail": 120,
+        "total_cost": 500,
+        "warranty": "2 years",
+        "wholesale": 50
+    },
+    {
+        "brand": "1",
+        "id": 23,
+        "modify_date": "Thu Feb 16 2023",
+        "name": "headphone 450",
+        "quantity": 15,
+        "retail": 540,
+        "total_cost": 3870,
+        "warranty": "4 years",
+        "wholesale": 258
+    },
+    {
+        "brand": "1",
+        "id": 24,
+        "modify_date": "Thu Feb 16 2023",
+        "name": "headphone 360",
+        "quantity": 20,
+        "retail": 550,
+        "total_cost": 5000,
+        "warranty": "2 years",
+        "wholesale": 250
+    },
+    {
+        "brand": "2",
+        "id": 25,
+        "modify_date": "Thu Feb 16 2023",
+        "name": "type c cable",
+        "quantity": 10,
+        "retail": 150,
+        "total_cost": 1200,
+        "warranty": "3 years",
+        "wholesale": 120
+    },
+    {
+        "brand": "1",
+        "id": 26,
+        "modify_date": "Thu Feb 16 2023",
+        "name": "keyboard imice",
+        "quantity": 12,
+        "retail": 700,
+        "total_cost": 6600,
+        "warranty": "1 years",
+        "wholesale": 550
+    },
+    {
+        "brand": "1",
+        "id": 27,
+        "modify_date": "Thu Feb 16 2023",
+        "name": "mouse imice",
+        "quantity": 10,
+        "retail": 250,
+        "total_cost": 1500,
+        "warranty": "3 years",
+        "wholesale": 150
+    },
+    {
+        "brand": "1",
+        "id": 28,
+        "modify_date": "Tue Feb 28 2023",
+        "name": "mobile stand",
+        "quantity": 5,
+        "retail": 100,
+        "total_cost": 250,
+        "warranty": "3 years",
+        "wholesale": 50
+    },
+    {
+        "brand": "1",
+        "id": 29,
+        "modify_date": "Tue Feb 28 2023",
+        "name": "mobile stand",
+        "quantity": 3,
+        "retail": 100,
+        "total_cost": 150,
+        "warranty": "2 years",
+        "wholesale": 50
+    },
+    {
+        "brand": "battery",
+        "id": 30,
+        "modify_date": "Mon May 15 2023",
+        "name": "battery 12volt",
+        "quantity": 8,
+        "retail": 1500,
+        "total_cost": 9600,
+        "warranty": "1 years",
+        "wholesale": 1200
+    },
+    {
+        "brand": "battery",
+        "id": 31,
+        "modify_date": "Mon May 15 2023",
+        "name": "battery 13volt",
+        "quantity": 14,
+        "retail": 2000,
+        "total_cost": 18200,
+        "warranty": "2 years",
+        "wholesale": 1300
+    },
+    {
+        "brand": "battery",
+        "id": 32,
+        "modify_date": "Mon May 15 2023",
+        "name": "battery 15volt",
+        "quantity": 15,
+        "retail": 1800,
+        "total_cost": 21000,
+        "warranty": "2 years",
+        "wholesale": 1400
+    },
+    {
+        "brand": "battery",
+        "id": 33,
+        "modify_date": "Mon May 15 2023",
+        "name": "battery 12volt",
+        "quantity": 15,
+        "retail": 1800,
+        "total_cost": 21000,
+        "warranty": "2 years",
+        "wholesale": 1400
+    },
+    {
+        "brand": "",
+        "id": 34,
+        "modify_date": "Wed May 17 2023",
+        "name": "",
+        "quantity": null,
+        "retail": null,
+        "total_cost": 0,
+        "warranty": "",
+        "wholesale": null
+    },
+    {
+        "brand": "",
+        "id": 35,
+        "modify_date": "Wed May 17 2023",
+        "name": "",
+        "quantity": null,
+        "retail": null,
+        "total_cost": 0,
+        "warranty": "",
+        "wholesale": null
+    }
+]

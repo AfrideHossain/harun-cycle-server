@@ -1,0 +1,62 @@
+[
+    {
+        "clientAddress": "Pangsha, Rajbari",
+        "clientDueAmount": 0,
+        "clientId": 1,
+        "clientName": "Afride Hossain",
+        "clientPhone": "01543892143",
+        "joiningDate": "Tue May 09 2023",
+        "lastTransactionAmount": 9250,
+        "lastTransactionDate": "Fri May 12 2023"
+    },
+    {
+        "clientAddress": "pangsha, rajbari",
+        "clientDueAmount": 2050,
+        "clientId": 2,
+        "clientName": "Jimmy chan",
+        "clientPhone": "01578324682",
+        "joiningDate": "Wed May 10 2023",
+        "lastTransactionAmount": 4000,
+        "lastTransactionDate": "Wed May 17 2023"
+    },
+    {
+        "clientAddress": "Pangsha, Rajbari",
+        "clientDueAmount": 705,
+        "clientId": 3,
+        "clientName": "Mehedi Hasan",
+        "clientPhone": "01921457632",
+        "joiningDate": "Fri May 12 2023",
+        "lastTransactionAmount": 4000,
+        "lastTransactionDate": "Wed May 17 2023"
+    },
+    {
+        "clientAddress": "Pangsha, Rajbari",
+        "clientDueAmount": 0,
+        "clientId": 4,
+        "clientName": "Subeen Shahriar",
+        "clientPhone": "01935468562",
+        "joiningDate": "Fri May 12 2023",
+        "lastTransactionAmount": 5700,
+        "lastTransactionDate": "Wed May 17 2023"
+    },
+    {
+        "clientAddress": "Pangsha, Rajbari",
+        "clientDueAmount": 95,
+        "clientId": 5,
+        "clientName": "mahmudul hasan",
+        "clientPhone": "01478931548",
+        "joiningDate": "Wed May 17 2023",
+        "lastTransactionAmount": 900,
+        "lastTransactionDate": "Wed May 17 2023"
+    },
+    {
+        "clientAddress": "Pangsha, Rajbari",
+        "clientDueAmount": 95,
+        "clientId": 6,
+        "clientName": "mahmudul hasan",
+        "clientPhone": "01478931548",
+        "joiningDate": "Wed May 17 2023",
+        "lastTransactionAmount": 900,
+        "lastTransactionDate": "Wed May 17 2023"
+    }
+]
