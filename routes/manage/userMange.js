@@ -1,32 +1,37 @@
 const express = require("express");
 const fetchValidUser = require("../middleware/fetchvaliduser");
 const router = express.Router();
-// knex db file
-const knex = require("../../dbcon");
+const { client } = require("../../mongoConnect");
+const { ObjectId } = require("mongodb");
 
-// get customer info
-router.get("/client/:id", fetchValidUser, (req, res) => {
-  let idParam = req.params;
+// client collection
+let clientInfo_collection = client
+  .db("harun_cycle_db")
+  .collection("clientInfo_collection");
+
+// get customer info from mongo
+router.get("/client/:id", fetchValidUser, async (req, res) => {
+  let idParam = req.params.id;
   try {
-    let clientInfoReq = knex("clientInfo")
-      .where({ clientId: idParam.id })
-      .select("*");
-    clientInfoReq.then((client) => {
-      if (!client.length) {
-        res.json({
-          success: false,
-          msg: "Client not found with id",
-        });
-        return;
-      }
+    let query = { _id: new ObjectId(idParam) };
+    const cursor = await clientInfo_collection.findOne(query);
+    if (cursor) {
       res.json({
         success: true,
         msg: "Client found with id",
-        client,
+        client: cursor,
       });
-    });
+    } else {
+      res.status(404).json({
+        success: false,
+        msg: "Client not found",
+      });
+    }
   } catch (error) {
-    res.status(500).json({ msg: "Server side error" });
+    res.status(404).json({
+      success: false,
+      msg: "Client not found",
+    });
   }
 });
 

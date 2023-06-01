@@ -3,32 +3,7 @@ const fetchValidUser = require("../middleware/fetchvaliduser");
 const router = express.Router();
 // knex db file
 const knex = require("../../dbcon");
-const { client } = require("../../mongoConnect");
 
-/*
- ***********************
- ** COLLECTIONS START **
- ***********************
- */
-// client collection
-let clientInfo_collection = client
-  .db("harun_cycle_db")
-  .collection("clientInfo_collection");
-// inventory collection
-let inventory_collection = client
-  .db("harun_cycle_db")
-  .collection("inventory_collection");
-// bills collection
-let bills_collection = client
-  .db("harun_cycle_db")
-  .collection("bills_collection");
-/*
- ***********************
- ** COLLECTIONS END **
- ***********************
- */
-
-//  bliis insert with knex
 const billInsert = (invoiceNumber, clientId, clientName, date, due, total) => {
   let insData = {
     invoiceNumber,
