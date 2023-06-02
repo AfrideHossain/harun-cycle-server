@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config()
+require("dotenv").config();
 const jwt_string = process.env.JWT_SECRET;
 
 const fetchValidUser = (req, res, next) => {
@@ -12,7 +12,7 @@ const fetchValidUser = (req, res, next) => {
     req.user = data.user;
     next();
   } catch (error) {
-    res.status(401).send({ error: "Invalid credentials" });
+    return res.status(401).send({ error: "Invalid credentials" });
   }
 };
 
