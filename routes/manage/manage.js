@@ -34,7 +34,8 @@ const billInsert = async (
   clientName,
   date,
   due,
-  total
+  total,
+  purchaseItems
 ) => {
   let insData = {
     invoiceNumber,
@@ -42,6 +43,7 @@ const billInsert = async (
     clientName,
     date: date.toDateString(),
     billAmount: Math.abs(due - total),
+    purchaseItems,
   };
   try {
     return await bills_collection.insertOne(insData);
@@ -53,10 +55,7 @@ const billInsert = async (
 // update customer bill with mongodb => router 1
 router.post("/customerbill", fetchValidUser, async (req, res) => {
   let date = new Date();
-  console.log(date.toDateString());
   let invoiceNumber = `INV-${Date.parse(date)}`;
-  console.log(invoiceNumber);
-  // console.log("req body: ", req.body);
   const {
     customerId,
     fullName,
@@ -80,7 +79,6 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
     paid,
   };
   try {
-    
     let purchaseItemIds = [];
     purchaseItems.map((pItem) => {
       let p_item_id = new ObjectId(pItem.productId);
@@ -102,6 +100,7 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
         return res.json({
           success: false,
           msg: `Insufficient quantity for product ${product.productId}`,
+          product: purItem,
         });
       }
     }
@@ -137,7 +136,8 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
           fullName,
           date,
           due,
-          total
+          total,
+          purchaseItems
         ).then((bill) => {
           return res.json({
             success: true,
@@ -168,7 +168,8 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
             fullName,
             date,
             due,
-            total
+            total,
+            purchaseItems
           ).then((bill) => {
             return res.json({
               success: true,
@@ -267,11 +268,18 @@ router.get("/allproducts", fetchValidUser, async (req, res) => {
   try {
     let all_products = await inventory_collection.find().toArray();
     if (all_products.length > 0) {
+      let stockValue = 0;
+      all_products.forEach((product) => {
+        let total_price =
+          parseFloat(product.wholesale) * parseInt(product.quantity);
+        stockValue += total_price;
+      });
       res.json({
         success: true,
         msg: "Information found",
         productsLen: all_products.length,
         allProducts: all_products,
+        stockValue: stockValue,
       });
     } else {
       res.json({
@@ -324,6 +332,27 @@ router.put("/product/:id", fetchValidUser, async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ msg: "Server side error" });
+  }
+});
+
+// route 7 -> delete a single product
+router.delete("/deleteproduct/:id", fetchValidUser, async (req, res) => {
+  const id = req.params.id;
+  // console.log("Requested id: ", id);
+  const deleteReq = await inventory_collection.deleteOne({
+    _id: new ObjectId(id),
+  });
+  if (deleteReq.deletedCount > 0) {
+    return res.json({
+      success: true,
+      msg: "Your product deleted",
+      productID: id,
+    });
+  } else {
+    return res.json({
+      success: false,
+      msg: "We can't delete your product",
+    });
   }
 });
 module.exports = router;

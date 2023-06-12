@@ -1,11 +1,20 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+require("dotenv").config()
 const port = process.env.PORT || 5000;
 const { connectMongo } = require("./mongoConnect");
 
 connectMongo();
-app.use(cors());
+// cors and json used here
+const corsConfig = {
+  origin: "*",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+};
+app.use(cors(corsConfig));
+app.options("", cors(corsConfig));
+
 app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");

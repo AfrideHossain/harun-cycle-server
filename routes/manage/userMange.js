@@ -9,6 +9,11 @@ let clientInfo_collection = client
   .db("harun_cycle_db")
   .collection("clientInfo_collection");
 
+// bills collection
+let bills_collection = client
+  .db("harun_cycle_db")
+  .collection("bills_collection");
+
 // get customer info from mongo
 router.get("/client/:id", fetchValidUser, async (req, res) => {
   let idParam = req.params.id;
@@ -106,5 +111,72 @@ router.get("/client/:id", fetchValidUser, async (req, res) => {
     res.status(500).json({ msg: "Server side error" });
   }
 }); */
+router.get("/allcustomers", fetchValidUser, async (req, res) => {
+  try {
+    const allCustomers = await clientInfo_collection
+      .find()
+      .sort({ clientDueAmount: -1 })
+      .toArray();
+    if (allCustomers.length > 0) {
+      return res.json({
+        success: true,
+        msg: "we have found some clients",
+        allCustomers,
+      });
+    } else {
+      return res.json({
+        success: false,
+        msg: "Sorry! we didn't found any clients",
+      });
+    }
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+});
+router.get("/searchcustomers", fetchValidUser, async (req, res) => {
+  const customerPhoneNum = req.query.phone;
+  try {
+    const allCustomers = await clientInfo_collection
+      .find({ clientPhone: customerPhoneNum })
+      .sort({ clientDueAmount: -1 })
+      .toArray();
+    if (allCustomers.length > 0) {
+      return res.json({
+        success: true,
+        msg: "we have found some clients",
+        allCustomers,
+      });
+    } else {
+      return res.json({
+        success: false,
+        msg: "Sorry! we didn't found any clients",
+      });
+    }
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+});
+router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    const allHistory = await bills_collection
+      .find({ clientId: customerId })
+      .toArray();
+    if (allHistory.length > 0) {
+      return res.json({
+        success: true,
+        msg: "we have found some records",
+        allHistory: allHistory,
+      });
+    } else {
+      return res.json({
+        success: false,
+        msg: "Sorry! we didn't found any records",
+      });
+    }
+  } catch (error) {
+    res.status(500).send("Internal server error");
+  }
+});
 
 module.exports = router;
