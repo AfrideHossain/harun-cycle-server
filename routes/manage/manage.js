@@ -338,7 +338,6 @@ router.put("/product/:id", fetchValidUser, async (req, res) => {
 // route 7 -> delete a single product
 router.delete("/deleteproduct/:id", fetchValidUser, async (req, res) => {
   const id = req.params.id;
-  // console.log("Requested id: ", id);
   const deleteReq = await inventory_collection.deleteOne({
     _id: new ObjectId(id),
   });
