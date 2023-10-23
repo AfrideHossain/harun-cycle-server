@@ -111,6 +111,8 @@ router.get("/client/:id", fetchValidUser, async (req, res) => {
     res.status(500).json({ msg: "Server side error" });
   }
 }); */
+
+// get all customers
 router.get("/allcustomers", fetchValidUser, async (req, res) => {
   try {
     const allCustomers = await clientInfo_collection
@@ -133,6 +135,8 @@ router.get("/allcustomers", fetchValidUser, async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
+// get customer info by phone number
 router.get("/searchcustomers", fetchValidUser, async (req, res) => {
   const customerPhoneNum = req.query.phone;
   try {
@@ -156,6 +160,8 @@ router.get("/searchcustomers", fetchValidUser, async (req, res) => {
     res.status(500).send("Internal server error");
   }
 });
+
+// get specific customer's history
 router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
   const customerId = req.params.id;
   try {
@@ -176,6 +182,31 @@ router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
     }
   } catch (error) {
     res.status(500).send("Internal server error");
+  }
+});
+
+// delete an specific customer
+router.delete("/deletecustomer/:id", fetchValidUser, async (req, res) => {
+  const customerId = req.params.id;
+  try {
+    const userDeleteReq = await clientInfo_collection.deleteOne({
+      _id: new ObjectId(customerId),
+    });
+    // console.log(userDeleteReq);
+    if (userDeleteReq.deletedCount > 0) {
+      return res.json({
+        success: true,
+        msg: "Successfully deleted the user",
+      });
+    } else {
+      return res.json({
+        success: false,
+        msg: "Sorry! failed to delete the user",
+      });
+    }
+  } catch (error) {
+    // return res.status(500).json({ status: 500, msg: "Internal server error" });
+    return res.status(500).send("Internal server error");
   }
 });
 
