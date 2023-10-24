@@ -18,5 +18,8 @@
     "md5": "^2.3.0",
     "mongodb": "^5.5.0",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
