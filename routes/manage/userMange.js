@@ -195,10 +195,16 @@ router.delete("/deletecustomer/:id", fetchValidUser, async (req, res) => {
     });
     // console.log(userDeleteReq);
     if (userDeleteReq.deletedCount > 0) {
-      return res.json({
-        success: true,
-        msg: "Successfully deleted the user",
+      // delete all bills of the user with same customer id
+      const billsDeleteReq = await bills_collection.deleteMany({
+        clientId: customerId,
       });
+      if (billsDeleteReq.deletedCount > 0) {
+        return res.json({
+          success: true,
+          msg: "Successfully deleted the user",
+        });
+      }
     } else {
       return res.json({
         success: false,
