@@ -15,15 +15,16 @@ let bills_collection = client
   .collection("bills_collection");
 
 // get customer info from mongo
-router.get("/client/:id", fetchValidUser, async (req, res) => {
-  let idParam = req.params.id;
+router.get("/client/:phone", fetchValidUser, async (req, res) => {
+  let phoneParam = req.params.phone;
+  // console.log(phoneParam);
   try {
-    let query = { _id: new ObjectId(idParam) };
+    let query = { clientPhone: phoneParam };
     const cursor = await clientInfo_collection.findOne(query);
     if (cursor) {
       res.json({
         success: true,
-        msg: "Client found with id",
+        msg: "Client found with phone number",
         client: cursor,
       });
     } else {
