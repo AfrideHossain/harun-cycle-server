@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config()
+require("dotenv").config();
 const port = process.env.PORT || 5000;
 const { connectMongo } = require("./mongoConnect");
 
@@ -17,7 +17,7 @@ app.options("", cors(corsConfig));
 
 app.use(express.json());
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.send("Stock Management System(HarunCycle) v1.3.1");
 });
 app.use("/auth", require("./routes/auth/auth"));
 app.use("/manage", require("./routes/manage/manage"));

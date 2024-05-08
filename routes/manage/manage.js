@@ -291,6 +291,39 @@ router.get("/allproducts", fetchValidUser, async (req, res) => {
     res.status(500).json({ msg: "Server side error" });
   }
 });
+// search product details from inventory_collection
+router.get("/searchProduct", fetchValidUser, async (req, res) => {
+  // console.log("hitted with: ", req);
+  const { pName } = req.query;
+  console.log(pName);
+  try {
+    let all_products = await inventory_collection
+      .find({ name: new RegExp(pName, "i") })
+      .toArray();
+    if (all_products.length > 0) {
+      /* let stockValue = 0;
+      all_products.forEach((product) => {
+        let total_price =
+          parseFloat(product.wholesale) * parseInt(product.quantity);
+        stockValue += total_price;
+      }); */
+      res.json({
+        success: true,
+        msg: "Information found",
+        productsLen: all_products.length,
+        allProducts: all_products,
+        // stockValue: stockValue,
+      });
+    } else {
+      res.json({
+        success: false,
+        msg: "Nothing found",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: "Server side error" });
+  }
+});
 // route 6
 router.get("/product/:id", fetchValidUser, async (req, res) => {
   let pid = req.params.id;
