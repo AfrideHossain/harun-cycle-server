@@ -17,7 +17,7 @@ app.options("", cors(corsConfig));
 
 app.use(express.json());
 app.get("/", (req, res) => {
-  res.send("Stock Management System(HarunCycle) v1.3.1");
+  res.send("Stock Management System(HarunCycle) v1.4.1");
 });
 app.use("/auth", require("./routes/auth/auth"));
 app.use("/manage", require("./routes/manage/manage"));

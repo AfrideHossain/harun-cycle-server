@@ -13,6 +13,10 @@ let clientInfo_collection = client
 let bills_collection = client
   .db("harun_cycle_db")
   .collection("bills_collection");
+// client collection
+let transection_collection = client
+  .db("harun_cycle_db")
+  .collection("transection_collection");
 
 // get customer info from mongo
 router.get("/client/:phone", fetchValidUser, async (req, res) => {
@@ -169,11 +173,15 @@ router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
     const allHistory = await bills_collection
       .find({ clientId: customerId })
       .toArray();
+    const allDiposits = await transection_collection
+      .find({ clientId: customerId })
+      .toArray();
     if (allHistory.length > 0) {
       return res.json({
         success: true,
         msg: "we have found some records",
         allHistory: allHistory,
+        allDiposits: allDiposits,
       });
     } else {
       return res.json({
@@ -210,6 +218,54 @@ router.delete("/deletecustomer/:id", fetchValidUser, async (req, res) => {
         success: false,
         msg: "Sorry! failed to delete the user",
       });
+    }
+  } catch (error) {
+    // return res.status(500).json({ status: 500, msg: "Internal server error" });
+    return res.status(500).send("Internal server error");
+  }
+});
+
+router.put("/deposit", fetchValidUser, async (req, res) => {
+  // const customerId = req.params.id;
+  const depositBody = req.body;
+  const date = new Date();
+  try {
+    const transectionDoc = {
+      clientId: depositBody.customerId,
+      amount: depositBody.deposit,
+      type: "deposit",
+      date: date.toDateString(),
+    };
+    const transectionInsert = await transection_collection.insertOne(
+      transectionDoc
+    );
+    if (transectionInsert.insertedId) {
+      const getClientDue = await clientInfo_collection.findOne(
+        { _id: new ObjectId(depositBody.customerId) },
+        { projection: { clientDueAmount: 1 } }
+      );
+      const updateClientDue = await clientInfo_collection.updateOne(
+        {
+          _id: new ObjectId(depositBody.customerId),
+        },
+        {
+          $set: {
+            clientDueAmount: getClientDue.clientDueAmount - depositBody.deposit,
+            lastTransactionAmount: depositBody.deposit,
+            lastTransactionDate: date.toDateString(),
+          },
+        }
+      );
+
+      if (updateClientDue.modifiedCount > 0) {
+        return res
+          .status(200)
+          .send({ success: true, msg: "Successfully deposit" });
+      } else {
+        return res.status(500).send("Internal server error");
+      }
+    } else {
+      return res.status(500).send("Internal server error");
     }
   } catch (error) {
     // return res.status(500).json({ status: 500, msg: "Internal server error" });

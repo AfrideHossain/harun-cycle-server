@@ -67,17 +67,17 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
     total,
     currentPayment,
   } = req.body;
-  let customerData = {
-    clientId: customerId,
-    clientName: fullName,
-    clientPhone: phone,
-    clientAddress: address,
-    clientDueAmount: due,
-    lastTransactionAmount: total,
-    lastTransactionDate: date.toDateString(),
-    purchaseItems,
-    paid,
-  };
+  // let customerData = {
+  //   clientId: customerId,
+  //   clientName: fullName,
+  //   clientPhone: phone,
+  //   clientAddress: address,
+  //   clientDueAmount: due,
+  //   lastTransactionAmount: total,
+  //   lastTransactionDate: date.toDateString(),
+  //   purchaseItems,
+  //   paid,
+  // };
   try {
     let purchaseItemIds = [];
     purchaseItems.map((pItem) => {
@@ -295,7 +295,7 @@ router.get("/allproducts", fetchValidUser, async (req, res) => {
 router.get("/searchProduct", fetchValidUser, async (req, res) => {
   // console.log("hitted with: ", req);
   const { pName } = req.query;
-  console.log(pName);
+  // console.log(pName);
   try {
     let all_products = await inventory_collection
       .find({ name: new RegExp(pName, "i") })
