@@ -13,8 +13,8 @@ let clientInfo_collection = client
 let bills_collection = client
   .db("harun_cycle_db")
   .collection("bills_collection");
-// client collection
-let transection_collection = client
+// transaction collection
+let transaction_collection = client
   .db("harun_cycle_db")
   .collection("transection_collection");
 
@@ -173,7 +173,7 @@ router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
     const allHistory = await bills_collection
       .find({ clientId: customerId })
       .toArray();
-    const allDiposits = await transection_collection
+    const allDiposits = await transaction_collection
       .find({ clientId: customerId })
       .toArray();
     if (allHistory.length > 0) {
@@ -236,7 +236,7 @@ router.put("/deposit", fetchValidUser, async (req, res) => {
       type: "deposit",
       date: date.toDateString(),
     };
-    const transectionInsert = await transection_collection.insertOne(
+    const transectionInsert = await transaction_collection.insertOne(
       transectionDoc
     );
     if (transectionInsert.insertedId) {

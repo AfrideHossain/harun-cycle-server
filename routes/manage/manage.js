@@ -21,6 +21,10 @@ let inventory_collection = client
 let bills_collection = client
   .db("harun_cycle_db")
   .collection("bills_collection");
+// transaction collection
+let transaction_collection = client
+  .db("harun_cycle_db")
+  .collection("transection_collection");
 /*
  ***********************
  ** COLLECTIONS END **
@@ -111,7 +115,7 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
       let purItem = purchased_products.find(
         (item) => new ObjectId(item._id).toString() === product.productId
       );
-      let newQty = purItem.quantity - parseInt(product.quantity);
+      let newQty = purItem.quantity - parseFloat(product.quantity);
       await inventory_collection.updateOne(
         { _id: new ObjectId(purItem._id) },
         { $set: { quantity: newQty } }
@@ -129,7 +133,16 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
         lastTransactionDate: date.toDateString(),
         joiningDate: date.toDateString(),
       };
-      clientInfo_collection.insertOne(insertData).then((data) => {
+      clientInfo_collection.insertOne(insertData).then(async (data) => {
+        const transactionDoc = {
+          clientId: data.insertedId,
+          amount: currentPayment,
+          type: "deposit",
+          date: date.toDateString(),
+        };
+        const transactionInsert = await transaction_collection.insertOne(
+          transactionDoc
+        );
         billInsert(
           invoiceNumber,
           new ObjectId(data.insertedId).toString(),
@@ -144,6 +157,7 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
             msg: `Client inserted`,
             _id: data.insertedId,
             billInfo: bill,
+            transactionID: transactionInsert.insertedId,
             date: date.toDateString(),
             invoiceNumber,
           });
@@ -161,7 +175,16 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
             },
           }
         )
-        .then((upclient) => {
+        .then(async (upclient) => {
+          const transactionDoc = {
+            clientId: customerId,
+            amount: currentPayment,
+            type: "deposit",
+            date: date.toDateString(),
+          };
+          const transactionInsert = await transaction_collection.insertOne(
+            transactionDoc
+          );
           billInsert(
             invoiceNumber,
             customerId,
@@ -176,6 +199,7 @@ router.post("/customerbill", fetchValidUser, async (req, res) => {
               msg: `Client updated`,
               upclient,
               billInfo: bill,
+              transactionID: transactionInsert.insertedId,
               date: date.toDateString(),
               invoiceNumber,
               _id: customerId,
