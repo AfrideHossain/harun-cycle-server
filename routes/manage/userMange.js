@@ -45,6 +45,104 @@ router.get("/client/:phone", fetchValidUser, async (req, res) => {
   }
 });
 
+router.get("/clientbyid/:id", fetchValidUser, async (req, res) => {
+  const { id } = req.params;
+
+  // console.log("customer id from clientbyid: ", id);
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      msg: "Invalid client ID format",
+    });
+  }
+
+  try {
+    const query = { _id: new ObjectId(id) };
+    // console.log("Query: ", query);
+    const client = await clientInfo_collection.findOne(query, {
+      projection: { clientName: 1, clientPhone: 1, clientAddress: 1 },
+    });
+
+    if (client) {
+      return res.json({
+        success: true,
+        msg: "Client found",
+        client,
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        msg: "Client not found",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching client by ID: ", error);
+    return res.status(500).json({
+      success: false,
+      msg: "An error occurred",
+    });
+  }
+});
+
+// Update client by ID
+router.put("/clientbyid/:id", fetchValidUser, async (req, res) => {
+  const { id } = req.params;
+  const reqBody = req.body;
+
+  // Validate the client ID
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      msg: "Invalid client ID format",
+    });
+  }
+
+  // Validate request body
+  if (!reqBody || Object.keys(reqBody).length === 0) {
+    return res.status(400).json({
+      success: false,
+      msg: "Request body is empty",
+    });
+  }
+
+  // Prepare fields for update
+  const upCreds = {};
+  for (const key in reqBody) {
+    if (reqBody[key]?.length > 0) {
+      upCreds[key] = reqBody[key];
+    }
+  }
+
+  // console.log(upCreds);
+
+  try {
+    // Perform the update operation
+    const result = await clientInfo_collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: upCreds }
+    );
+
+    // Check if the update was successful
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({
+        success: false,
+        msg: "No client found to update or no changes made",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      msg: "Client updated successfully",
+    });
+  } catch (error) {
+    console.error("Error updating client:", error);
+    return res.status(500).json({
+      success: false,
+      msg: "Internal server error",
+    });
+  }
+});
+
 // update customer bill
 /* router.post("/customerbill", fetchValidUser, (req, res) => {
   let date = new Date();
@@ -173,7 +271,7 @@ router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
     const allHistory = await bills_collection
       .find({ clientId: customerId })
       .toArray();
-    const allDiposits = await transaction_collection
+    const allDeposits = await transaction_collection
       .find({ clientId: customerId })
       .toArray();
     if (allHistory.length > 0) {
@@ -181,7 +279,7 @@ router.get("/customerHistory/:id", fetchValidUser, async (req, res) => {
         success: true,
         msg: "we have found some records",
         allHistory: allHistory,
-        allDiposits: allDiposits,
+        allDeposits: allDeposits,
       });
     } else {
       return res.json({
@@ -228,18 +326,18 @@ router.delete("/deletecustomer/:id", fetchValidUser, async (req, res) => {
 router.put("/deposit", fetchValidUser, async (req, res) => {
   // const customerId = req.params.id;
   const depositBody = req.body;
-  const date = new Date();
   try {
-    const transectionDoc = {
+    const transactionDoc = {
       clientId: depositBody.customerId,
-      amount: depositBody.deposit,
+      amount: parseFloat(depositBody.deposit),
       type: "deposit",
-      date: date.toDateString(),
+      date: new Date(depositBody.date).toDateString(),
     };
-    const transectionInsert = await transaction_collection.insertOne(
-      transectionDoc
+    // console.log(transactionDoc);
+    const transactionInsert = await transaction_collection.insertOne(
+      transactionDoc
     );
-    if (transectionInsert.insertedId) {
+    if (transactionInsert.insertedId) {
       const getClientDue = await clientInfo_collection.findOne(
         { _id: new ObjectId(depositBody.customerId) },
         { projection: { clientDueAmount: 1 } }
@@ -252,7 +350,7 @@ router.put("/deposit", fetchValidUser, async (req, res) => {
           $set: {
             clientDueAmount: getClientDue.clientDueAmount - depositBody.deposit,
             lastTransactionAmount: depositBody.deposit,
-            lastTransactionDate: date.toDateString(),
+            lastTransactionDate: new Date(depositBody.date).toDateString(),
           },
         }
       );
@@ -269,6 +367,7 @@ router.put("/deposit", fetchValidUser, async (req, res) => {
     }
   } catch (error) {
     // return res.status(500).json({ status: 500, msg: "Internal server error" });
+    console.log(error);
     return res.status(500).send("Internal server error");
   }
 });

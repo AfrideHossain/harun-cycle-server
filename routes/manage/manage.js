@@ -261,6 +261,47 @@ router.get("/billstoday/", fetchValidUser, async (req, res) => {
     res.status(500).json({ msg: "Server side error" });
   }
 });
+// new route for fetching bills by date range
+
+router.get("/billsrange/", fetchValidUser, async (req, res) => {
+  const { startDate, endDate } = req.query;
+
+  try {
+    if (!startDate || !endDate) {
+      return res
+        .status(400)
+        .json({ msg: "Start date and end date are required" });
+    }
+
+    // Convert query parameters to Date objects
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    const billsInRange = await bills_collection
+      .find({
+        date: { $gte: start, $lte: end },
+      })
+      .toArray();
+
+    if (billsInRange.length > 0) {
+      res.json({
+        success: true,
+        msg: "Information found",
+        allBills: billsInRange,
+      });
+    } else {
+      res.json({
+        success: false,
+        msg: "No bills found for the specified range",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching bills:", error);
+    res.status(500).json({ msg: "Server side error" });
+  }
+});
+
+
 // add new product mongodb => route 4
 router.post("/addproduct", fetchValidUser, (req, res) => {
   let date = new Date();
